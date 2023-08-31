@@ -6,6 +6,17 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import locale from 'element-ui/lib/locale/lang/en' // lang i18n
 
+import Antd from 'ant-design-vue';
+import 'ant-design-vue/dist/antd.css';
+Vue.config.productionTip = false;
+Vue.use(Antd);
+
+
+// import Vue2OrgTree from 'vue2-org-tree'
+// import 'vue2-org-tree/dist/style.css'
+// Vue.use(Vue2OrgTree)
+
+
 import '@/styles/index.scss' // global css
 
 import App from './App'

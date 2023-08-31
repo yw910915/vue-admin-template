@@ -63,6 +63,24 @@ export const constantRoutes = [
     meta: { title: 'Example', icon: 'el-icon-s-help' },
     children: [
       {
+        path: 'g6',
+        name: 'g6',
+        component: () => import('@/views/g6/index'),
+        meta: { title: 'g6', icon: 'table' }
+      },
+      {
+        path: 'tu1',
+        name: 'tu1',
+        component: () => import('@/views/tu1/index'),
+        meta: { title: 'tu1', icon: 'table' }
+      },
+      {
+        path: 'tu2',
+        name: 'tu2',
+        component: () => import('@/views/tu2/index'),
+        meta: { title: 'tu2', icon: 'table' }
+      },
+      {
         path: 'table',
         name: 'Table',
         component: () => import('@/views/table/index'),

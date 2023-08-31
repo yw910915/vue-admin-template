@@ -73,67 +73,11 @@ export default {
     props: {
         list: {
             type: Array,
-            default: () => [
-              {
-                    id: '1',
-                    name: 'span1',
-                    serviceId: 'service1',
-                    children: [
-                        {
-                            id: '1-1',
-                            name: 'user',
-                            serviceId: 'service-user',
-                            children: [
-                                {
-                                    id: '1-1-1',
-                                    name: 'shop',
-                                    serviceId: '18',
-                                    children: [
-                                        {
-                                            id: '1-1-1-1',
-                                            name: 'common',
-                                            serviceId: 'common-service',
-                                        },
-                                    ],
-                                },
-                                {
-                                    id: '1-1-2',
-                                    name: 'account1',
-                                    serviceId: 'account-service',
-                                },
-                                {
-                                    id: '1-1-3',
-                                    name: 'account2',
-                                    serviceId: 'account-service',
-
-                                },
-                                {
-                                    id: '1-1-4',
-                                    name: 'account3',
-                                    serviceId: 'account-service',
-                                },
-                            ],
-                        },
-                        {
-                            id: '1-2',
-                            name: 'truck',
-                            serviceId: 'truck-pay',
-                            work: 'web',
-                        },
-                    ],
-                },],
+            default: () => [],
         },
         showfields: {
             type: Array,
-            default: () => [
-              {
-                    name: '服务名称：',
-                    key: 'name',
-                },
-                {
-                    name: '服务编号：',
-                    key: 'serviceId',
-                }],
+            default: () => [],
         },
     },
     mounted() {
@@ -214,6 +158,7 @@ export default {
             })
         },
         position_top(id, position) {
+            debugger
             let dom = document.getElementById(id)
             let height
             if (dom) {
@@ -251,8 +196,6 @@ export default {
 
 <style lang="scss" scoped>
   .tree-right {
-    width: 100%;
-    height: 100%;
     p {
       margin: 0;
       font-size: 13px;
