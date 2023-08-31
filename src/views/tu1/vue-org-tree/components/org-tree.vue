@@ -16,6 +16,8 @@
         @on-node-click="(e, data) => $emit('on-node-click', e, data)"
         @on-node-mouseover="(e, data) => $emit('on-node-mouseover', e, data)"
         @on-node-mouseout="(e, data) => $emit('on-node-mouseout', e, data)"
+        @on-node-mouseenter="(e, data) => $emit('on-node-mouseenter', e, data)"
+        @on-node-mouseleave="(e, data) => $emit('on-node-mouseleave', e, data)"
         @on-node-drag-start="(e, data) => onDragStart(e, data)"
         @on-node-drag-over="(e, data) => onDragOver(e, data)"
         @on-node-drop="(e, data) => onDrop(e, data)"

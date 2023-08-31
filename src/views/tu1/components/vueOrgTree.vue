@@ -8,6 +8,8 @@
     @on-node-click="onNodeClick"
     @on-node-mouseover="onNodeMouseover"
     @on-node-mouseout="onNodeMouseout"
+    @on-node-mouseenter="onNodeMouseenter"
+    @on-node-mouseleave="onNodeMouseleave"
     @on-node-drag-start="onDragStart"
     @on-node-drag-over="onDragOver"
     @on-node-drop="onDrop"
@@ -108,7 +110,7 @@ export default {
     },
     // 以下是自定义编辑删除新增
     renderContent(h, data) {
-      console.log(data, "renderContent____________________________________--");
+      // console.log(data, "renderContent___________________________________");
       const id = `renderid_${data.id}`;
       return (
         <div style="margin:5px;" id={id}>
@@ -128,9 +130,12 @@ export default {
       this.$emit('onNodeClick',data)
     },
     // 鼠标移入
-    onNodeMouseover(e, item) {
-      console.log("onNodeMouseover", e, item);
-      // debugger
+    onNodeMouseover(e, item) {},
+    // 鼠标移出
+    onNodeMouseout(e, item) {},
+    // 移入
+    onNodeMouseenter(e,item) {
+      console.log(e, 'onNodeMouseenter',item)
       const { target, fromElement } = e;
       const { id } = item;
       // 新方式
@@ -159,12 +164,13 @@ export default {
         return data;
       }
       const temp = [{ ...this.dataList }];
+      // const temp = [_.cloneDeep(this.dataList)];
       const da = addFieldToTree(temp, this.currentId, "isShowAddBtn")[0];
       this.dataList = da;
+
     },
-    // 鼠标移出
-    onNodeMouseout(e, item) {
-      console.log("onNodeMouseout", e, item);
+    onNodeMouseleave(e,item) {
+      console.log(e, 'onNodeMouseleave',item)
       const { target, fromElement } = e;
       const { id } = item;
       //获取当前节点的父节点
@@ -188,13 +194,7 @@ export default {
       }
       const temp = [_.cloneDeep(this.dataList)];
       const da = editFieldToTree(temp, "isShowAddBtn")[0];
-      // // 只有移除的dom元素为外层或者定位的元素(增加节点按钮)时才做数据更新处理
-      if (
-        target?.className.includes("org-tree-node-label-inner") ||
-        target?.className.includes("el-icon-circle-plus-outline")
-      ) {
-        this.dataList = da;
-      }
+      this.dataList = da;
     },
     onDragStart(e, data) {
       console.log(e, "onDragStart", data);
@@ -205,55 +205,55 @@ export default {
     onDrop(e, dragPre, dragCurr) {
       console.log(e, "onDrop", dragPre, dragCurr);
       // type,sorted,parentId,label,isShowAddBtn,id,desc,children
-      this.dataList = {
-        sorted: 1,
-        children: [
-          // 拖拽后
-          {
-            sorted: 1,
-            children: [
-              {
-                sorted: 1,
-                children: [],
-                id: 833333,
-                label: "3.1佛挡杀佛东方饭店水电费的司法送达放大",
-                type: "0",
-                parentId: 10,
-                desc: ""
-              }
-            ],
-            id: 10,
-            label: "2.2通融通融一桶一桶一体盆通一通i圆通(拖拽后2变成1)",
-            type: "0",
-            parentId: 9,
-            desc: ""
-          },
-          {
-            sorted: 1,
-            children: [
-              {
-                sorted: 1,
+      // this.dataList = {
+      //   sorted: 1,
+      //   children: [
+      //     // 拖拽后
+      //     {
+      //       sorted: 1,
+      //       children: [
+      //         {
+      //           sorted: 1,
+      //           children: [],
+      //           id: 833333,
+      //           label: "3.1佛挡杀佛东方饭店水电费的司法送达放大",
+      //           type: "0",
+      //           parentId: 10,
+      //           desc: ""
+      //         }
+      //       ],
+      //       id: 10,
+      //       label: "2.2通融通融一桶一桶一体盆通一通i圆通(拖拽后2变成1)",
+      //       type: "0",
+      //       parentId: 9,
+      //       desc: ""
+      //     },
+      //     {
+      //       sorted: 1,
+      //       children: [
+      //         {
+      //           sorted: 1,
 
-                id: 83,
-                label: "3.1附件房剑荡四方较大说法较大生发剂放大司马法打撒",
-                type: "0",
-                parentId: 10,
-                desc: ""
-              }
-            ],
-            id: 10,
-            label: "2.1发生的疯疯癫癫更容易破塔月卡拖拉很尬",
-            type: "0",
-            parentId: 9,
-            desc: ""
-          }
-        ],
-        id: 9,
-        label: "1.0福建师范束带结发都开始法大大大大大放大",
-        type: "0",
-        parentId: null,
-        desc: ""
-      };
+      //           id: 83,
+      //           label: "3.1附件房剑荡四方较大说法较大生发剂放大司马法打撒",
+      //           type: "0",
+      //           parentId: 10,
+      //           desc: ""
+      //         }
+      //       ],
+      //       id: 10,
+      //       label: "2.1发生的疯疯癫癫更容易破塔月卡拖拉很尬",
+      //       type: "0",
+      //       parentId: 9,
+      //       desc: ""
+      //     }
+      //   ],
+      //   id: 9,
+      //   label: "1.0福建师范束带结发都开始法大大大大大放大",
+      //   type: "0",
+      //   parentId: null,
+      //   desc: ""
+      // };
     },
 
     onClickTopAdd(e, data) {
@@ -324,86 +324,5 @@ export default {
 </script>
  
 <style lang="scss">
-.org-page-container {
-  height: calc(100vh - 50px);
-  // height: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  .org-page-middle {
-    flex: 1;
-    position: relative;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    .org-page-middle-expand {
-      width: 10px;
-      height: 40px;
-      border-radius: 4px 0 0 4px;
-      background: #ccc;
-      position: absolute;
-      right: 0;
-      top: calc(50% - 20px);
-      cursor: pointer;
-      line-height: 40px;
-      i {
-        font-size: 14px;
-      }
-    }
-  }
-  .org-page-right {
-    height: 100%;
-  }
-}
 
-.bg-gray {
-  color: gray;
-  box-shadow: none !important;
-}
-// .org-tree-container {
-//   position: relative; /*定位*/
-//   top: 0;
-//   left: 0;
-// }
-* {
-  -webkit-touch-callout: none; /*系统默认菜单被禁用*/
-  -webkit-user-select: none; /*webkit浏览器*/
-  -khtml-user-select: none; /*早期浏览器*/
-  -moz-user-select: none; /*火狐*/
-  -ms-user-select: none; /*IE10*/
-  user-select: none;
-}
-input {
-  -webkit-user-select: auto; /*webkit浏览器*/
-}
-textarea {
-  -webkit-user-select: auto; /*webkit浏览器*/
-}
-
-// 更改样式
-.org-tree-node-label-inner {
-  border: 1px solid #ccc;
-  background: #f5f7fa69;
-  position: relative;
-  padding: 0 !important;
-}
-.hover-border {
-  border: 1px solid #005aff;
-}
-.topAddIcon {
-  top: -12px;
-  left: calc(50% - 12px);
-  color: #005aff;
-  font-size: 24px;
-  cursor: pointer;
-  z-index: 900;
-}
-.bottomAddIcon {
-  bottom: -13px;
-  left: calc(50% - 12px);
-  color: #005aff;
-  font-size: 24px;
-  cursor: pointer;
-  z-index: 900;
-}
 </style>

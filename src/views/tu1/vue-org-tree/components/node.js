@@ -2,6 +2,8 @@ const EVENTS = {
     CLICK: 'on-node-click',
     MOUSEOUT: 'on-node-mouseout',
     MOUSEOVER: 'on-node-mouseover',
+    MOUSEENTER: 'on-node-mouseenter',
+    MOUSELEAVE: 'on-node-mouseleave',
     DRAGSTART: 'on-node-drag-start',
     DRAGOVER: 'on-node-drag-over',
     DROP: 'on-node-drop'
@@ -90,6 +92,8 @@ const EVENTS = {
     const clickHandler = listeners[EVENTS.CLICK]
     const mouseOutHandler = listeners[EVENTS.MOUSEOUT]
     const mouseOverHandler = listeners[EVENTS.MOUSEOVER]
+    const mouseEnterHandler = listeners[EVENTS.MOUSEENTER]
+    const mouseLeaveHandler = listeners[EVENTS.MOUSELEAVE]
     const dragStartHandler = listeners[EVENTS.DRAGSTART];
     const dragOverHandler = listeners[EVENTS.DRAGOVER];
     const dropHander = listeners[EVENTS.DROP];
@@ -146,6 +150,8 @@ const EVENTS = {
         'click': createListener(clickHandler, data),
         'mouseout': createListener(mouseOutHandler, data),
         'mouseover': createListener(mouseOverHandler, data),
+        'mouseenter': createListener(mouseEnterHandler, data),
+        'mouseleave': createListener(mouseLeaveHandler, data),
       }
     }, childNodes)])
   }

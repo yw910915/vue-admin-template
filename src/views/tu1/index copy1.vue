@@ -1,51 +1,40 @@
 <template>
-  <div style="overflow:auto;margin:60px">
-    <el-button style="position: absolute; top: 0;" @click="clickGeneratePicture">下载</el-button>
-    <vue2-org-tree
-      :data="dataList"
-      :horizontal="!horizontal"
-      :collapsable="collapsable"
-      :label-class-name="labelClassName"
-      :render-content="renderContent"
-      ref="imageDom"
-      @on-expand="onExpand"
-      @on-node-click="onNodeClick"
-      @on-node-focus="onNodeFocus"
-      @on-node-mouseover="onNodeMouseover"
-      @on-node-mouseout="onNodeMouseout"
-      @on-node-drag-start="onDragStart"
-      @on-node-drag-over="onDragOver"
-      @on-node-drop="onDrop"
-    />
-    <el-dialog title="预览" :visible.sync="dialogVisible" width="50%">
-      <span>
-        <img style="width: 100%;" :src="imgUrl" alt />
-      </span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary">
-          <a :href="imgUrl" download="组织架构.png" style="color: #fff;">下载</a>
-        </el-button>
-      </span>
-    </el-dialog>
-    <el-dialog title="编辑" :visible.sync="dialogclick" width="30%">
-      <span>
-        <el-input v-model="childreninput"></el-input>
-      </span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogclick = false">取 消</el-button>
-        <el-button type="primary" @click="dialogclicks(treeData)">确 定</el-button>
-      </span>
-    </el-dialog>
+  <div class="org-page-container">
+    <siderMenu></siderMenu>
+    <div class="org-page-middle">
+      <vue2-org-tree
+        :data="dataList"
+        :horizontal="!horizontal"
+        :collapsable="collapsable"
+        :label-class-name="labelClassName"
+        :render-content="renderContent"
+        @on-node-click="onNodeClick"
+        @on-node-mouseover="onNodeMouseover"
+        @on-node-mouseout="onNodeMouseout"
+        @on-node-drag-start="onDragStart"
+        @on-node-drag-over="onDragOver"
+        @on-node-drop="onDrop"
+      />
+      <div class="org-page-middle-expand" @click="expandClick">
+        <a-icon type="caret-left" />
+      </div>
+    </div>
+    <div class="org-page-right">
+      <orgRightDetail ref="orgRightDetail" v-model="showDetailvisible" />
+    </div>
   </div>
 </template> 
  
  
 <script>
+import siderMenu from "./components/siderMenu.vue";
+import vue2OrgTree from "./vue-org-tree/components/org-tree.vue";
+import orgRightDetail from "./components/orgRightDetail.vue";
 import _ from "lodash";
 import { mockdata } from "./mockdata.js";
 export default {
   name: "TreeTest",
+  components: { siderMenu, vue2OrgTree, orgRightDetail },
   data() {
     return {
       treeData: mockdata,
@@ -56,9 +45,13 @@ export default {
       labelClassName: "bg-gray", // 默认颜色
       scrollTreeStyle: "width:100%;height:100%", // 行内样式
       imgUrl: "", // 转换base64存放
-      dialogVisible: false, // 预览盒子
+
       dialogclick: false,
-      childreninput: null
+      childreninput: null,
+      currentId: "",
+
+      // 右侧
+      showDetailvisible: false
     };
   },
   // 开启拖拽的指令
@@ -92,22 +85,15 @@ export default {
   },
 
   methods: {
-    // 以下是base64图片生成
-    clickGeneratePicture() {
-      // this.dialogVisible = true
-      // html2canvas(this.$refs.imageDom.$el).then(canvas => {
-      //   // 转成图片，生成图片地址
-      //   this.imgUrl = canvas.toDataURL('image/png')
-      // })
-    },
-
     getList() {
       // 后台回去的数据 赋值给data即可
-      this.dataList = this.treeData[0];
+      const that = this;
+      new Promise(resolve => {
+        setTimeout(() => {
+          that.dataList = this.treeData[0];
+        }, 1000);
+      });
     },
-    // {data.isShowAddBtn ? <template><i class="el-icon-circle-plus-outline topAddIcon" style="position:absolute" onClick={(e)=> this.onClickTopAdd(e, data)}></i><i class="el-icon-circle-plus-outline bottomAddIcon" style="position:absolute" onClick={(e)=> this.onClickBottomAdd(e, data)}></i></template>: null}
-
-    // {data.isShowAddBtn ? <i class="el-icon-circle-plus-outline topAddIcon" style="position:absolute" onClick={(e)=> this.onClickTopAdd(e, data)}></i>: null}
     getTableData() {
       const tableData = [
         {
@@ -137,7 +123,8 @@ export default {
         </el-table>
       );
     },
-    getRenderDom(data) {
+    // 上下增加按钮dom
+    getNodeAddDom(data) {
       const vnode = [];
       if (data.isShowAddBtn) {
         vnode.push(
@@ -159,96 +146,48 @@ export default {
     },
     // 以下是自定义编辑删除新增
     renderContent(h, data) {
-      // console.log(data, "renderContent____________________________________--");
+      console.log(data, "renderContent____________________________________--");
+      const id = `renderid_${data.id}`;
       return (
-        <div style="margin:5px">
+        <div style="margin:5px;" id={id}>
           <div class="label" style="display: inline-block;">
             {data.label}
           </div>
           <i class="el-icon-s-comment"></i>
           {/*JSON.stringify(data)*/}
-          {this.getRenderDom(data)}
+          {this.getNodeAddDom(data)}
           {data.id == "833333" ? this.getTableData() : ""}
         </div>
       );
     },
-    // <div>
-    //   <el-popover
-    //     placement="bottom"
-    //     width="225"
-    //     trigger="click">
-    //     <div style="text-align: right; margin: 0">
-    //       <el-button size="mini" type="primary" onClick={(v) => this.onClick(v, data)}>编辑</el-button>
-    //       <el-button size="mini" type="primary" onClick={(v) => this.onClick(v, data)}>新增子节点</el-button>
-    //       <el-button type="primary" size="mini" onClick={(v) => this.onerror(v, data)}>删除</el-button>
-    //     </div>
-    //     <div slot="reference">
-    //       <div><img src={ data.sorted === 2 ? require('../../icons/svg/user.svg') : require('../../icons/svg/user.svg') } style={{ height: '20px', width: '20px' }}></img></div>
-    //       <div class="label">{data.label}</div>
-    //     </div>
-    //   </el-popover>
-    // </div>
-    onClick(v, data) {
-      console.log();
-      this.dialogclick = true;
-    },
-    dialogclicks(item) {},
-    onerror(v, data) {
-      console.log(data);
-    },
-    onExpand(e, data) {
-      const _this = this;
-      if ("expand" in data) {
-        data.expand = !data.expand;
-        if (!data.expand && data.children) {
-          _this.collapse(data.children);
-        }
-      } else {
-        _this.$set(data, "expand", true);
-      }
-    },
-    // 自定义您的点击事件
-    onNodeClick(e, data) {
-      // alert("点击");
-    },
-    collapse(list) {
-      var _this = this;
-      list.forEach(function(child) {
-        if (child.expand) {
-          child.expand = false;
-        }
-        child.children && _this.collapse(child.children);
+    // 自定义的点击事件
+    async onNodeClick(e, data) {
+      // 打开右侧弹框
+      this.showDetailvisible = true;
+      const dataList = await this.getDetailMockdata();
+      this.$nextTick(() => {
+        this.$refs.orgRightDetail.setDetailData(dataList);
       });
     },
-    expandChange() {
-      this.collapsable = true;
-      this.toggleExpand(this.data, this.expandAll);
-    },
-    toggleExpand(data, val) {
-      var _this = this;
-      if (Array.isArray(data)) {
-        data.forEach(function(item) {
-          _this.$set(item, "expand", val);
-          if (item.children) {
-            _this.toggleExpand(item.children, val);
-          }
-        });
-      } else {
-        this.$set(data, "expand", val);
-        if (data.children) {
-          _this.toggleExpand(data.children, val);
-        }
-      }
-    },
-    // ----------------------------
-    onNodeFocus() {},
+    // 鼠标移入
     onNodeMouseover(e, item) {
       console.log("onNodeMouseover", e, item);
       // debugger
       const { target, fromElement } = e;
       const { id } = item;
+      // 新方式
+      // 获取第一次进来的节点id
+      if (!this.currentId || this.currentId != id) {
+        this.currentId = id;
+      }
+      //获取当前节点的父节点
+      const domid = `renderid_${this.currentId}`;
+      const firstId = document.getElementById(domid);
+      let parentNode = firstId.parentNode;
+      // 给父节节点加边框
+      parentNode.classList.add("hover-border");
       function addFieldToTree(treeArray, id, fieldName) {
-        let data = [...treeArray]
+        let data = [...treeArray];
         data.forEach(item => {
           if (item.id == id) {
             item[fieldName] = true;
@@ -261,56 +200,41 @@ export default {
         });
         return data;
       }
-      const temp = [{...this.dataList}]
-      const da = addFieldToTree(temp, id, "isShowAddBtn")[0];
-
-      if (target?.className.includes("org-tree-node-label-inner")) {
-        target.classList.add("hover-border");
-        this.dataList = da;
-      }
-      if (fromElement?.className.includes("org-tree-node-label-inner")) {
-        fromElement.classList.add("hover-border");
-        this.dataList = da;
-      }
-      if (target?.className.includes("el-icon-circle-plus-outline")) {
-        // fromElement.offsetParent.classList.add("hover-border");
-        this.dataList = da;
-      }
-      // if (fromElement?.className.includes("el-icon-circle-plus-outline")) {
-      //   fromElement.classList.add("hover-border");
-      //   this.dataList = da;
-      // }
+      const temp = [{ ...this.dataList }];
+      const da = addFieldToTree(temp, this.currentId, "isShowAddBtn")[0];
+      this.dataList = da;
     },
+    // 鼠标移出
     onNodeMouseout(e, item) {
       console.log("onNodeMouseout", e, item);
       const { target, fromElement } = e;
-      function addFieldToTree(treeArray, fieldName, fieldValue = false) {
-        let data = [...treeArray]
+      const { id } = item;
+      //获取当前节点的父节点
+      const domid = `renderid_${id}`;
+      const firstId = document.getElementById(domid);
+      let parentNode = firstId.parentNode;
+      // 移除的是当前节点则取消边框
+      if (this.currentId == id) {
+        parentNode.classList.remove("hover-border");
+      }
+      function editFieldToTree(treeArray, fieldName, fieldValue = false) {
+        let data = [...treeArray];
         data.forEach(item => {
           item[fieldName] = fieldValue;
 
           if (item.children && Array.isArray(item.children)) {
-            addFieldToTree(item.children, fieldName, fieldValue);
+            editFieldToTree(item.children, "isShowAddBtn");
           }
         });
         return data;
       }
-      const temp = [{...this.dataList}]
-      const da = addFieldToTree(temp, "isShowAddBtn")[0];
-
-
-      if (target?.className.includes("org-tree-node-label-inner")) {
-        target.classList.remove("hover-border");
-        this.dataList = da;
-      }
-      if (fromElement?.className.includes("org-tree-node-label-inner")) {
-        fromElement.classList.remove("hover-border");
-        this.dataList = da;
-      }
-      if (target?.className.includes("el-icon-circle-plus-outline")) {
-        this.dataList = da;
-      }
-      if (fromElement?.className.includes("el-icon-circle-plus-outline")) {
+      const temp = [_.cloneDeep(this.dataList)];
+      const da = editFieldToTree(temp, "isShowAddBtn")[0];
+      // // 只有移除的dom元素为外层或者定位的元素(增加节点按钮)时才做数据更新处理
+      if (
+        target?.className.includes("org-tree-node-label-inner") ||
+        target?.className.includes("el-icon-circle-plus-outline")
+      ) {
         this.dataList = da;
       }
     },
@@ -377,16 +301,103 @@ export default {
     onClickTopAdd(e, data) {
       e.stopPropagation();
       console.log(e, "onClickTopAdd", data);
+      // alert("点击增加上");
     },
     onClickBottomAdd(e, data) {
       e.stopPropagation();
       console.log(e, "onClickBottomAdd", data);
+      // alert("点击增加下");
+    },
+    async expandClick() {
+      this.showDetailvisible = !this.showDetailvisible;
+      const data = await this.getDetailMockdata();
+      this.$nextTick(() => {
+        this.$refs.orgRightDetail.setDetailData(data);
+      });
+    },
+    getDetailMockdata() {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          const data = {
+            title: "5.1.1建立主控与辅助厂房402房间方式方法水电费地方",
+            content: [
+              {
+                title: "设备名称",
+                dataIndex: "name",
+                value: "11111",
+                componentType: "input"
+              },
+              {
+                title: "设备名称22",
+                dataIndex: "name111",
+                value: "1",
+                componentType: "select",
+                optionList: [
+                  { label: "正常", value: "1" },
+                  { label: "异常", value: "2" }
+                ]
+              },
+              {
+                title: "设备名称",
+                dataIndex: "name",
+                value: "11111",
+                componentType: "input"
+              },
+              {
+                title: "设备名称",
+                dataIndex: "name",
+                value: "11111",
+                componentType: "input"
+              },
+              {
+                title: "设备名称",
+                dataIndex: "name",
+                value: "11111",
+                componentType: "input"
+              }
+            ]
+          };
+          resolve(data);
+        }, 500);
+      });
     }
   }
 };
 </script>
  
-<style lang="less">
+<style lang="scss">
+.org-page-container {
+  height: calc(100vh - 50px);
+  // height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  .org-page-middle {
+    flex: 1;
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    .org-page-middle-expand {
+      width: 10px;
+      height: 40px;
+      border-radius: 4px 0 0 4px;
+      background: #ccc;
+      position: absolute;
+      right: 0;
+      top: calc(50% - 20px);
+      cursor: pointer;
+      line-height: 40px;
+      i {
+        font-size: 14px;
+      }
+    }
+  }
+  .org-page-right {
+    height: 100%;
+  }
+}
+
 .bg-gray {
   color: gray;
   box-shadow: none !important;
@@ -415,7 +426,7 @@ textarea {
 .org-tree-node-label-inner {
   border: 1px solid #ccc;
   background: #f5f7fa69;
-  position:relative;
+  position: relative;
   padding: 0 !important;
 }
 .hover-border {
