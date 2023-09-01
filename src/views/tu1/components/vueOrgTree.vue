@@ -5,6 +5,7 @@
     :collapsable="collapsable"
     :label-class-name="labelClassName"
     :render-content="renderContent"
+    @on-expand="onExpand"
     @on-node-click="onNodeClick"
     @on-node-mouseover="onNodeMouseover"
     @on-node-mouseout="onNodeMouseout"
@@ -32,7 +33,7 @@ export default {
     return {
       dataList: {}, // 模板绑定的数据
       horizontal: false, // 横版 竖版
-      collapsable: false, // 子节点是否可折叠的
+      collapsable: true, // 子节点是否可折叠的
       expandAll: true, // 是否全部展开
       labelClassName: "bg-gray", // 默认颜色
       scrollTreeStyle: "width:100%;height:100%", // 行内样式
@@ -423,12 +424,25 @@ export default {
       const da = addTreeChild(temp, key)[0];
       this.dataList = da
     },
-    async expandClick() {
-      // this.showDetailvisible = !this.showDetailvisible;
-      // const data = await this.getDetailMockdata();
-      // this.$nextTick(() => {
-      //   this.$refs.orgRightDetail.setDetailData(data);
-      // });
+    onExpand(e, data) {
+      const _this = this;
+      if ("expand" in data) {
+        data.expand = !data.expand;
+        if (!data.expand && data.children) {
+          _this.collapse(data.children);
+        }
+      } else {
+        _this.$set(data, "expand", true);
+      }
+    },
+    collapse(list) {
+      var _this = this;
+      list.forEach(function(child) {
+        if (child.expand) {
+          child.expand = false;
+        }
+        child.children && _this.collapse(child.children);
+      });
     },
     getDetailMockdata() {
       return new Promise(resolve => {
