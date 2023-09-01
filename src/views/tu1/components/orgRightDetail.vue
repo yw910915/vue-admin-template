@@ -1,6 +1,7 @@
 <template>
   <div class="org-right-container" v-show="visible">
-    <div class="title">{{title}}</div>
+    <!-- <div class="title">{{title}}</div> -->
+    <a-input class="title" v-model="currentData.title" allow-clear />
     <div class="split-line"></div>
     <div class="btn-img">
       <div class="btn-img-item" v-for="(item,index) in arrImg" :key="index">
@@ -8,7 +9,7 @@
       </div>
     </div>
     <div class="edit-content">
-      <div class="edit-content-item" v-for="(item,index) in contentList" :key="index">
+      <div class="edit-content-item" v-for="(item,index) in currentData.content" :key="index">
         <div class="edit-content-item-title">
           <div class="edit-content-item-title-left">
             <span>{{item.title}}</span>
@@ -48,8 +49,8 @@
     <div class="bottom-btn">
       <a-button block>新增属性</a-button>
       <div class="del-save">
-        <a-button style="flex:1">删除</a-button>
-        <a-button style="flex:1;margin-left: 10px;" type="primary">保存</a-button>
+        <a-button style="flex:1" @click="del">删除</a-button>
+        <a-button style="flex:1;margin-left: 10px;" type="primary" @click="save">保存</a-button>
       </div>
     </div>
   </div>
@@ -96,17 +97,25 @@ export default {
         "border-outer",
         "radius-bottomleft",
       ],
-      title: "",
-      contentList: [],
+      currentData: {}, // 当前所有的数据
     };
   },
 
   methods: {
-    setDetailData(data) {
+    setDetailData(data,dataList) {
       if (!this.showDetailvisible) return;
       const { title, content } = data;
       this.title = title;
-      this.contentList = content;
+      this.contentList = content || [];
+      this.currentData = data
+    },
+    del() {
+      console.log(this.currentData, 'currentData____del')
+      this.$emit('del', this.currentData)
+    },
+    save() {
+      console.log(this.currentData, 'currentData____del')
+      this.$emit('save', this.currentData)
     }
   }
 };
