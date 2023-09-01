@@ -8,7 +8,7 @@
       </div>
     </div>
     <div class="org-page-right">
-      <orgRightDetail ref="orgRightDetail" v-model="showDetailvisible" />
+      <orgRightDetail ref="orgRightDetail" v-model="showDetailvisible" @del="delDetail" @save="saveDetail" />
     </div>
   </div>
 </template> 
@@ -26,6 +26,7 @@ export default {
   data() {
     return {
       dataList: [],
+      newdataList: [], // 存储最新中间流程图数据
       
       // 右侧
       showDetailvisible: false
@@ -37,11 +38,13 @@ export default {
 
   methods: {
     // 点击节点
-    async onNodeClick(value) {
+    async onNodeClick(value, dataList) {
+      console.log(value, 'onNodeClick', dataList)
+      this.newdataList = [dataList]
       this.showDetailvisible = true
       const data = await this.getDetailMockdataApi();
       this.$nextTick(() => {
-        this.$refs.orgRightDetail.setDetailData(data);
+        this.$refs.orgRightDetail.setDetailData({...value,...data});
       });
     },
     // 点击右侧展开按钮
@@ -49,8 +52,84 @@ export default {
       this.showDetailvisible = !this.showDetailvisible;
       const data = await this.getDetailMockdataApi();
       this.$nextTick(() => {
-        this.$refs.orgRightDetail.setDetailData(data);
+        this.$refs.orgRightDetail.setDetailData({...value,...data});
       });
+    },
+    // 删除详情
+    delDetail(value) {
+      console.log(value, 'delDetail________value')
+      function deleteNodeAndChildren(treeData, targetId) {
+        // 递归遍历树形结构数据
+        function traverse(node) {
+          if (node.key === targetId) {
+            // 找到匹配的节点，将其从父节点的children数组中删除
+            const parentIndex = treeData.indexOf(parentNode);
+            if (parentIndex !== -1) {
+              treeData[parentIndex].children.splice(currentIndex, 1);
+              return;
+            }
+          } else if (node.children) {
+            // 继续遍历子节点
+            for (let i = 0; i < node.children.length; i++) {
+              parentNode = node;
+              currentIndex = i;
+              traverse(node.children[i]);
+            }
+          }
+        }
+
+        let parentNode = null;
+        let currentIndex = -1;
+
+        // 找到树中的根节点
+        for (let i = 0; i < treeData.length; i++) {
+          traverse(treeData[i]);
+        }
+
+        return treeData;
+      }
+      const data = deleteNodeAndChildren(this.newdataList, value.key)
+      // 更新数据
+      this.dataList = data
+
+    },
+    // 保存的详情
+    saveDetail(value) {
+      console.log(value, 'saveDetail________value')
+      function updateNodeAndChildren(treeData, targetId, newData) {
+      // 递归遍历树形结构数据
+        function traverse(node) {
+          if (node.key === targetId) {
+            // 找到匹配的节点，更新数据
+            Object.assign(node, newData);
+          }
+          
+          if (node.children) {
+            // 继续遍历子节点
+            for (let i = 0; i < node.children.length; i++) {
+              traverse(node.children[i]);
+            }
+          }
+        }
+
+        // 遍历树中的每个节点
+        for (let i = 0; i < treeData.length; i++) {
+          traverse(treeData[i]);
+        }
+
+        return treeData;
+      }
+      const updataData = {
+        title: value.title
+      }
+
+
+      const updatedTreeData = updateNodeAndChildren(this.newdataList, value.key, updataData);
+      console.log(updatedTreeData);
+      // 更新数据
+      this.dataList = updatedTreeData
+
+
     },
 
     // 获取初始化数据
@@ -69,7 +148,7 @@ export default {
       return new Promise(resolve => {
         setTimeout(() => {
           const data = {
-            title: "5.1.1建立主控与辅助厂房402房间方式方法水电费地方",
+            // title: "5.1.1建立主控与辅助厂房402房间方式方法水电费地方",
             content: [
               {
                 title: "设备名称",

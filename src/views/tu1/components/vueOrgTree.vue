@@ -42,22 +42,20 @@ export default {
       childreninput: null,
       currentId: "",
 
-      showTemp: false, // 临时显影设置
-
+      showTemp: false // 临时显影设置
     };
   },
   watch: {
     list: {
-       handler(val) {
-        if(val && val.length>0) {
-          this.dataList = val[0]
+      handler(val) {
+        if (val && val.length > 0) {
+          this.dataList = val[0];
         }
-       },
-       immediate: true
+      },
+      immediate: true
     }
   },
-  mounted() {
-  },
+  mounted() {},
 
   methods: {
     getTableData() {
@@ -90,7 +88,7 @@ export default {
       );
     },
     // 上下增加按钮dom
-    getNodeAddDom(data) { 
+    getNodeAddDom(data) {
       const vnode = [];
       if (data.isShowAddBtn) {
         vnode.push(
@@ -107,10 +105,28 @@ export default {
             onClick={e => this.onClickBottomAdd(e, data)}
           ></i>
         );
-        // 临时
-        if(this.showTemp) {
+        if (data.showTopAddStutas) {
           vnode.push(
-            <a-button size="small" class="bottom-add-btn" onClick={ e=> this.testClick(e, data)}>同级</a-button>
+            <a-button-group size="small" class="top-add-btn">
+              <a-button onClick={e => this.clickSameLever(e, data, "top")}>
+                同级
+              </a-button>
+              <a-button onClick={e => this.clickChildLever(e, data, "top")}>
+                子级
+              </a-button>
+            </a-button-group>
+          );
+        }
+        if (data.showBottomAddStutas) {
+          vnode.push(
+            <a-button-group size="small" class="bottom-add-btn">
+              <a-button onClick={e => this.clickSameLever(e, data, "bottom")}>
+                同级
+              </a-button>
+              <a-button onClick={e => this.clickChildLever(e, data, "bottom")}>
+                子级
+              </a-button>
+            </a-button-group>
           );
         }
       }
@@ -122,28 +138,28 @@ export default {
       const id = `renderid_${data.key}`;
       return (
         <div style="margin:5px;" id={id}>
-          <div class="label" style="display: inline-block;">
-            {data.title }
+          <div class="label" style="display: inline-block;min-width:80px">
+            {data.title}
           </div>
           <i class="el-icon-s-comment"></i>
           {/*JSON.stringify(data)*/}
           {this.getNodeAddDom(data)}
-          {data.key == "833333" ? this.getTableData() : ""}
+          {/*data.key == "833333" ? this.getTableData() : ""*/}
         </div>
       );
     },
     // 自定义的点击事件
-    async onNodeClick(e, data) {
+    async onNodeClick(e, data, dataList) {
       // 打开右侧弹框
-      this.$emit('onNodeClick',data)
+      this.$emit("onNodeClick", data, this.dataList);
     },
     // 鼠标移入
     onNodeMouseover(e, item) {},
     // 鼠标移出
     onNodeMouseout(e, item) {},
     // 移入
-    onNodeMouseenter(e,item) {
-      console.log(e, 'onNodeMouseenter',item)
+    onNodeMouseenter(e, item) {
+      console.log(e, "onNodeMouseenter", item);
       const { target, fromElement } = e;
       const { key } = item;
       // 新方式
@@ -175,10 +191,9 @@ export default {
       // const temp = [_.cloneDeep(this.dataList)];
       const da = addFieldToTree(temp, this.currentId, "isShowAddBtn")[0];
       this.dataList = da;
-
     },
-    onNodeMouseleave(e,item) {
-      console.log(e, 'onNodeMouseleave',item)
+    onNodeMouseleave(e, item) {
+      console.log(e, "onNodeMouseleave", item);
       const { target, fromElement } = e;
       const { key } = item;
       //获取当前节点的父节点
@@ -193,6 +208,13 @@ export default {
         let data = [...treeArray];
         data.forEach(item => {
           item[fieldName] = fieldValue;
+          // 同级和子级状态处理
+          if (item.showTopAddStutas) {
+            item.showTopAddStutas = false;
+          }
+          if (item.showBottomAddStutas) {
+            item.showBottomAddStutas = false;
+          }
 
           if (item.children && Array.isArray(item.children)) {
             editFieldToTree(item.children, "isShowAddBtn");
@@ -204,7 +226,7 @@ export default {
       const da = editFieldToTree(temp, "isShowAddBtn")[0];
       this.dataList = da;
 
-      this.showTemp = false
+      this.showTemp = false;
     },
     onDragStart(e, data) {
       console.log(e, "onDragStart", data);
@@ -266,21 +288,140 @@ export default {
       // };
     },
 
-    onClickTopAdd(e, data) {
+    onClickTopAdd(e, item) {
       e.stopPropagation();
-      console.log(e, "onClickTopAdd", data);
+      console.log(e, "onClickTopAdd", item);
+      const { target, fromElement } = e;
+      const { key } = item;
       // alert("点击增加上");
+      function addFieldToTree(treeArray, key, fieldName) {
+        let data = [...treeArray];
+        data.forEach(item => {
+          if (item.key == key) {
+            item[fieldName] = true;
+          } else {
+            item[fieldName] = false;
+          }
+          if (item.children && Array.isArray(item.children)) {
+            addFieldToTree(item.children, key, fieldName);
+          }
+        });
+        return data;
+      }
+      const temp = [{ ...this.dataList }];
+      const da = addFieldToTree(temp, key, "showTopAddStutas")[0];
+      this.dataList = da;
     },
-    onClickBottomAdd(e, data) {
+    onClickBottomAdd(e, item) {
       e.stopPropagation();
-      console.log(e, "onClickBottomAdd", data);
+      console.log(e, "onClickBottomAdd", item);
+      const { target, fromElement } = e;
+      const { key } = item;
       // alert("点击增加下");
-      this.showTemp = true
+      function addFieldToTree(treeArray, key, fieldName) {
+        let data = [...treeArray];
+        data.forEach(item => {
+          if (item.key == key) {
+            item[fieldName] = true;
+          } else {
+            item[fieldName] = false;
+          }
+          if (item.children && Array.isArray(item.children)) {
+            addFieldToTree(item.children, key, fieldName);
+          }
+        });
+        return data;
+      }
+      const temp = [{ ...this.dataList }];
+      const da = addFieldToTree(temp, key, "showBottomAddStutas")[0];
+      this.dataList = da;
+
+      this.showTemp = true;
     },
-    // 临时测试同级 按钮点击
-    testClick(e, data) {
+    // 同级 按钮点击
+    clickSameLever(e, item, type) {
       e.stopPropagation();
-      console.log(e, "testClick_____同级", data);
+      console.log(e, "clickSameLever____同级", item, type);
+      const { key } = item;
+      
+      function addNodeAfterIndex(treeData, targetId) {
+        // 递归遍历树形结构数据
+        function traverse(node, parentId, currentIndex, parentNode) {
+          if (node.key == parentId) {
+            // 找到匹配的节点
+            if (!parentNode.children) {
+              parentNode.children = [];
+            }
+            // 生成新的key
+            let newKey = ''
+            if(String(node.key).indexOf('-')> -1) {
+              let lenArr = node.key.split('-')
+              // const lastKeyNum = Number(lenArr[lenArr.length - 1]) + 1
+              // 临时自增加大，后面调整
+              const lastKeyNum = Number(lenArr[lenArr.length - 1]) + 100
+
+              lenArr[lenArr.length - 1] = lastKeyNum
+              newKey = lenArr.join('-')
+            } else {
+              newKey = Number(node.key)
+            }
+            let newNode = {
+              key: newKey,
+              title: " "
+            };
+            // 在当前索引的后面插入新节点
+            parentNode.children.splice(currentIndex + 1, 0, newNode);
+          } else if (node.children) {
+            // 继续遍历子节点
+            for (let i = 0; i < node.children.length; i++) {
+              traverse(node.children[i], parentId, i, node);
+            }
+          }
+        }
+
+        // 找到树中的根节点
+        for (let i = 0; i < treeData.length; i++) {
+          traverse(treeData[i], targetId, -1, null);
+        }
+
+        return treeData;
+      }
+      const temp = [{ ...this.dataList }];
+      const da = addNodeAfterIndex(temp, key)[0];
+      this.dataList = da
+
+    },
+    // 子级 按钮点击
+    clickChildLever(e, item, type) {
+      e.stopPropagation();
+      console.log(e, "clickChildLever____子级", item, type);
+      const { key } = item;
+      function addTreeChild(treeArray, key) {
+        let data = [...treeArray];
+        data.forEach(item => {
+          if (item.key == key) {
+            const curChildLength = item.children ? item.children.length : 0;
+            const addChildren = {
+              key: `${key}-${curChildLength + 1}`,
+              title: " "
+            };
+            if(item.children && item.children.length>0) {
+                item.children = [...item.children,addChildren]
+            } else {
+                Object.assign(item, {
+                    children: [addChildren]
+                })
+            }
+          }
+          if (item.children && Array.isArray(item.children)) {
+            addTreeChild(item.children, key);
+          }
+        });
+        return data;
+      }
+      const temp = [{ ...this.dataList }];
+      const da = addTreeChild(temp, key)[0];
+      this.dataList = da
     },
     async expandClick() {
       // this.showDetailvisible = !this.showDetailvisible;
@@ -367,13 +508,20 @@ export default {
   z-index: 900;
 }
 // 同级和子级
-.bottom-add-btn {
-  position:absolute;
-  bottom: -13px;
-  left: calc(50% - 24px);
+.top-add-btn {
+  position: absolute;
+  top: -13px;
+  left: calc(50% - 47px);
   color: #005aff;
   cursor: pointer;
   z-index: 1000;
 }
-
+.bottom-add-btn {
+  position: absolute;
+  bottom: -13px;
+  left: calc(50% - 47px);
+  color: #005aff;
+  cursor: pointer;
+  z-index: 1000;
+}
 </style>
