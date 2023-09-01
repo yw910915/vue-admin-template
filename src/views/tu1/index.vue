@@ -31,7 +31,7 @@ export default {
       showDetailvisible: false
     };
   },
-  mounted() {
+  created() {
     this.getInitData()
   },
 
@@ -172,30 +172,4 @@ textarea {
   -webkit-user-select: auto; /*webkit浏览器*/
 }
 
-// 更改样式
-.org-tree-node-label-inner {
-  border: 1px solid #ccc;
-  background: #f5f7fa69;
-  position: relative;
-  padding: 0 !important;
-}
-.hover-border {
-  border: 1px solid #005aff;
-}
-.topAddIcon {
-  top: -12px;
-  left: calc(50% - 12px);
-  color: #005aff;
-  font-size: 24px;
-  cursor: pointer;
-  z-index: 900;
-}
-.bottomAddIcon {
-  bottom: -13px;
-  left: calc(50% - 12px);
-  color: #005aff;
-  font-size: 24px;
-  cursor: pointer;
-  z-index: 900;
-}
 </style>

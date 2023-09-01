@@ -3,13 +3,16 @@
     <div class="serch">
       <a-input-search placeholder="输入关键字进行过滤"></a-input-search>
     </div>
-    <div>
+    <div class="menu-body">
       <a-directory-tree
+        v-if="treeArr.length>0"
         ref="menuTree"
         :tree-data="treeArr"
-        node-key="id"
+        node-key="key"
         blockNode
         default-expand-all
+        :auto-expand-parent="true"
+        :expandAction="false"
         @select="handleClick"
         @expand="onExpand"
       >
@@ -36,10 +39,10 @@ export default {
   },
   watch: {
     dataList: {
-       handler(val) {
-        this.treeArr = val
-       },
-       immediate: true
+      handler(val) {
+        this.treeArr = val;
+      },
+      immediate: true
     }
   },
   methods: {
@@ -60,12 +63,24 @@ export default {
   .serch {
     margin: 10px 5% 0 5%;
   }
-  /deep/ .ant-tree li .ant-tree-title {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    display: inline-block;
-    width: 90%;
+
+  .menu-body {
+    /deep/ .ant-tree.ant-tree-block-node li .ant-tree-node-content-wrapper {
+      width: 100%;
+    }
+    /deep/ .ant-tree li .ant-tree-title {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      display: inline-block;
+      width: 100%;
+    }
+    /deep/ .ant-tree li span.ant-tree-iconEle {
+      display: none;
+    }
+    /deep/ .ant-tree li span.ant-tree-switcher {
+      display: none;
+    }
   }
 }
 </style>

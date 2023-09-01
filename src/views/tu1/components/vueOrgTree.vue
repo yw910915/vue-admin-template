@@ -42,6 +42,8 @@ export default {
       childreninput: null,
       currentId: "",
 
+      showTemp: false, // 临时显影设置
+
     };
   },
   watch: {
@@ -88,7 +90,7 @@ export default {
       );
     },
     // 上下增加按钮dom
-    getNodeAddDom(data) {
+    getNodeAddDom(data) { 
       const vnode = [];
       if (data.isShowAddBtn) {
         vnode.push(
@@ -105,13 +107,19 @@ export default {
             onClick={e => this.onClickBottomAdd(e, data)}
           ></i>
         );
+        // 临时
+        if(this.showTemp) {
+          vnode.push(
+            <a-button size="small" class="bottom-add-btn" onClick={ e=> this.testClick(e, data)}>同级</a-button>
+          );
+        }
       }
       return vnode;
     },
     // 以下是自定义编辑删除新增
     renderContent(h, data) {
       // console.log(data, "renderContent___________________________________");
-      const id = `renderid_${data.id}`;
+      const id = `renderid_${data.key}`;
       return (
         <div style="margin:5px;" id={id}>
           <div class="label" style="display: inline-block;">
@@ -120,7 +128,7 @@ export default {
           <i class="el-icon-s-comment"></i>
           {/*JSON.stringify(data)*/}
           {this.getNodeAddDom(data)}
-          {data.id == "833333" ? this.getTableData() : ""}
+          {data.key == "833333" ? this.getTableData() : ""}
         </div>
       );
     },
@@ -137,11 +145,11 @@ export default {
     onNodeMouseenter(e,item) {
       console.log(e, 'onNodeMouseenter',item)
       const { target, fromElement } = e;
-      const { id } = item;
+      const { key } = item;
       // 新方式
       // 获取第一次进来的节点id
-      if (!this.currentId || this.currentId != id) {
-        this.currentId = id;
+      if (!this.currentId || this.currentId != key) {
+        this.currentId = key;
       }
       //获取当前节点的父节点
       const domid = `renderid_${this.currentId}`;
@@ -149,16 +157,16 @@ export default {
       let parentNode = firstId.parentNode;
       // 给父节节点加边框
       parentNode.classList.add("hover-border");
-      function addFieldToTree(treeArray, id, fieldName) {
+      function addFieldToTree(treeArray, key, fieldName) {
         let data = [...treeArray];
         data.forEach(item => {
-          if (item.id == id) {
+          if (item.key == key) {
             item[fieldName] = true;
           } else {
             item[fieldName] = false;
           }
           if (item.children && Array.isArray(item.children)) {
-            addFieldToTree(item.children, id, fieldName);
+            addFieldToTree(item.children, key, fieldName);
           }
         });
         return data;
@@ -172,13 +180,13 @@ export default {
     onNodeMouseleave(e,item) {
       console.log(e, 'onNodeMouseleave',item)
       const { target, fromElement } = e;
-      const { id } = item;
+      const { key } = item;
       //获取当前节点的父节点
-      const domid = `renderid_${id}`;
+      const domid = `renderid_${key}`;
       const firstId = document.getElementById(domid);
       let parentNode = firstId.parentNode;
       // 移除的是当前节点则取消边框
-      if (this.currentId == id) {
+      if (this.currentId == key) {
         parentNode.classList.remove("hover-border");
       }
       function editFieldToTree(treeArray, fieldName, fieldValue = false) {
@@ -195,6 +203,8 @@ export default {
       const temp = [_.cloneDeep(this.dataList)];
       const da = editFieldToTree(temp, "isShowAddBtn")[0];
       this.dataList = da;
+
+      this.showTemp = false
     },
     onDragStart(e, data) {
       console.log(e, "onDragStart", data);
@@ -204,7 +214,7 @@ export default {
     },
     onDrop(e, dragPre, dragCurr) {
       console.log(e, "onDrop", dragPre, dragCurr);
-      // type,sorted,parentId,label,isShowAddBtn,id,desc,children
+      // type,sorted,parentId,label,isShowAddBtn,key,desc,children
       // this.dataList = {
       //   sorted: 1,
       //   children: [
@@ -215,14 +225,14 @@ export default {
       //         {
       //           sorted: 1,
       //           children: [],
-      //           id: 833333,
+      //           key: 833333,
       //           label: "3.1佛挡杀佛东方饭店水电费的司法送达放大",
       //           type: "0",
       //           parentId: 10,
       //           desc: ""
       //         }
       //       ],
-      //       id: 10,
+      //       key: 10,
       //       label: "2.2通融通融一桶一桶一体盆通一通i圆通(拖拽后2变成1)",
       //       type: "0",
       //       parentId: 9,
@@ -234,21 +244,21 @@ export default {
       //         {
       //           sorted: 1,
 
-      //           id: 83,
+      //           key: 83,
       //           label: "3.1附件房剑荡四方较大说法较大生发剂放大司马法打撒",
       //           type: "0",
       //           parentId: 10,
       //           desc: ""
       //         }
       //       ],
-      //       id: 10,
+      //       key: 10,
       //       label: "2.1发生的疯疯癫癫更容易破塔月卡拖拉很尬",
       //       type: "0",
       //       parentId: 9,
       //       desc: ""
       //     }
       //   ],
-      //   id: 9,
+      //   key: 9,
       //   label: "1.0福建师范束带结发都开始法大大大大大放大",
       //   type: "0",
       //   parentId: null,
@@ -265,6 +275,12 @@ export default {
       e.stopPropagation();
       console.log(e, "onClickBottomAdd", data);
       // alert("点击增加下");
+      this.showTemp = true
+    },
+    // 临时测试同级 按钮点击
+    testClick(e, data) {
+      e.stopPropagation();
+      console.log(e, "testClick_____同级", data);
     },
     async expandClick() {
       // this.showDetailvisible = !this.showDetailvisible;
@@ -324,5 +340,40 @@ export default {
 </script>
  
 <style lang="scss">
+// 更改样式
+.org-tree-node-label-inner {
+  border: 1px solid #ccc;
+  background: #f5f7fa69;
+  position: relative;
+  padding: 0 !important;
+}
+.hover-border {
+  border: 1px solid #005aff;
+}
+.topAddIcon {
+  top: -12px;
+  left: calc(50% - 12px);
+  color: #005aff;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 900;
+}
+.bottomAddIcon {
+  bottom: -13px;
+  left: calc(50% - 12px);
+  color: #005aff;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 900;
+}
+// 同级和子级
+.bottom-add-btn {
+  position:absolute;
+  bottom: -13px;
+  left: calc(50% - 24px);
+  color: #005aff;
+  cursor: pointer;
+  z-index: 1000;
+}
 
 </style>
