@@ -124,7 +124,7 @@ export default {
         if (data.showTopAddStutas) {
           vnode.push(
             <a-button-group size="small" class="top-add-btn">
-              <a-button onClick={e => this.clickSameLever(e, data, "top")}>
+              <a-button onClick={e => this.clickSameLevel(e, data, "top")}>
                 同级
               </a-button>
               <a-button onClick={e => this.clickChildLevel(e, data, "top")}>
@@ -136,7 +136,7 @@ export default {
         if (data.showBottomAddStutas) {
           vnode.push(
             <a-button-group size="small" class="bottom-add-btn">
-              <a-button onClick={e => this.clickSameLever(e, data, "bottom")}>
+              <a-button onClick={e => this.clickSameLevel(e, data, "bottom")}>
                 同级
               </a-button>
               <a-button onClick={e => this.clickChildLevel(e, data, "bottom")}>
@@ -354,7 +354,7 @@ export default {
 
     },
     // 同级 按钮点击
-    clickSameLever(e, item, type) {
+    clickSameLevel(e, item, type) {
       e.stopPropagation();
       console.log(e, "clickSameLever____同级", item, type);
       const { key } = item;
