@@ -120,7 +120,12 @@ export default {
         return treeData;
       }
       const updataData = {
-        title: value.title
+        title: value.title,
+        // 增加百分比
+        percentageData: {
+          percentage: value.percentage,
+          percentageType: 'percentage',
+        },
       }
 
 

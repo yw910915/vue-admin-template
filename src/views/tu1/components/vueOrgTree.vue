@@ -92,6 +92,17 @@ export default {
         </el-table>
       );
     },
+    getPercentage(data) {
+      // 百分比
+      const vnode = [];
+      if(data?.percentageData?.percentage) {
+        vnode.push(
+          <div style="background: #aed0d4;display: inline-flex;padding: 0px 5px;">{data?.percentageData?.percentage}</div>
+          // <progress value="22" max="100" style="width:50px"> 22%</progress>
+        )
+      }
+      return vnode
+    },
     // 上下增加按钮dom
     getNodeAddDom(data) {
       const vnode = [];
@@ -146,6 +157,7 @@ export default {
           <div class="label" style="display: inline-block;min-width:80px">
             {data.title}
           </div>
+          {this.getPercentage(data)}
           <i class="el-icon-s-comment"></i>
           {/*JSON.stringify(data)*/}
           {this.getNodeAddDom(data)}

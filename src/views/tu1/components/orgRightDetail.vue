@@ -2,6 +2,7 @@
   <div class="org-right-container" v-show="visible">
     <!-- <div class="title">{{title}}</div> -->
     <a-input class="title" v-model="currentData.title" allow-clear />
+    <a-button style size="small" @click="addPercentage">增加百分比(测试)</a-button>
     <div class="split-line"></div>
     <div class="btn-img">
       <div class="btn-img-item" v-for="(item,index) in arrImg" :key="index">
@@ -53,6 +54,10 @@
         <a-button style="flex:1;margin-left: 10px;" type="primary" @click="save">保存</a-button>
       </div>
     </div>
+    <a-modal v-model="showPercentageVisible" title="Basic Modal" @ok="handleOkPercentage">
+      <p>添加百分比数字</p>
+      <a-input v-model="percentage" allow-clear />
+    </a-modal>
   </div>
 </template>
 
@@ -98,6 +103,9 @@ export default {
         "radius-bottomleft",
       ],
       currentData: {}, // 当前所有的数据
+
+      showPercentageVisible: false,
+      percentage: '',
     };
   },
 
@@ -114,8 +122,25 @@ export default {
       this.$emit('del', this.currentData)
     },
     save() {
-      console.log(this.currentData, 'currentData____del')
+      console.log(this.currentData, 'currentData____save')
       this.$emit('save', this.currentData)
+    },
+
+
+    // 部分测试功能
+    addPercentage() {
+      // 增加百分比
+      const {} = this.currentData
+      this.showPercentageVisible = true
+    },
+    handleOkPercentage() {
+      if(this.percentage) {
+        Object.assign(this.currentData, {
+          percentage: this.percentage +'%'
+        })
+      }
+      this.showPercentageVisible = false
+      this.percentage = ''
     }
   }
 };

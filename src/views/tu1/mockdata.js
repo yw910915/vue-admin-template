@@ -58,6 +58,10 @@ export const mockdata = [
   {
     key: 1,
     title: "1.蓄电池放电",
+    percentageData: {
+      percentage: '10%',
+      percentageType: 'percentage',
+    },
     children: [
       {
         key: '2-1',
