@@ -43,17 +43,21 @@ export default {
       childreninput: null,
       currentId: "",
 
-      showTemp: false // 临时显影设置
     };
   },
   watch: {
     list: {
       handler(val) {
+        console.log('流程图数据___________________________', val)
         if (val && val.length > 0) {
           this.dataList = val[0];
+          this.$nextTick(() => {
+            this.toggleExpand(val, true)
+          })
         }
       },
-      immediate: true
+      immediate: true,
+      deep: true
     }
   },
   mounted() {},
@@ -112,7 +116,7 @@ export default {
               <a-button onClick={e => this.clickSameLever(e, data, "top")}>
                 同级
               </a-button>
-              <a-button onClick={e => this.clickChildLever(e, data, "top")}>
+              <a-button onClick={e => this.clickChildLevel(e, data, "top")}>
                 子级
               </a-button>
             </a-button-group>
@@ -124,7 +128,7 @@ export default {
               <a-button onClick={e => this.clickSameLever(e, data, "bottom")}>
                 同级
               </a-button>
-              <a-button onClick={e => this.clickChildLever(e, data, "bottom")}>
+              <a-button onClick={e => this.clickChildLevel(e, data, "bottom")}>
                 子级
               </a-button>
             </a-button-group>
@@ -227,7 +231,6 @@ export default {
       const da = editFieldToTree(temp, "isShowAddBtn")[0];
       this.dataList = da;
 
-      this.showTemp = false;
     },
     onDragStart(e, data) {
       console.log(e, "onDragStart", data);
@@ -337,7 +340,6 @@ export default {
       const da = addFieldToTree(temp, key, "showBottomAddStutas")[0];
       this.dataList = da;
 
-      this.showTemp = true;
     },
     // 同级 按钮点击
     clickSameLever(e, item, type) {
@@ -393,9 +395,9 @@ export default {
 
     },
     // 子级 按钮点击
-    clickChildLever(e, item, type) {
+    clickChildLevel(e, item, type) {
       e.stopPropagation();
-      console.log(e, "clickChildLever____子级", item, type);
+      console.log(e, "clickChildLevel____子级", item, type);
       const { key } = item;
       function addTreeChild(treeArray, key) {
         let data = [...treeArray];
@@ -404,7 +406,8 @@ export default {
             const curChildLength = item.children ? item.children.length : 0;
             const addChildren = {
               key: `${key}-${curChildLength + 1}`,
-              title: " "
+              title: " ",
+              expand: true, // 增加expand字段，使增加的子节点默认展开
             };
             if(item.children && item.children.length>0) {
                 item.children = [...item.children,addChildren]
@@ -425,6 +428,7 @@ export default {
       this.dataList = da
     },
     onExpand(e, data) {
+      console.log(e,data, 'onExpand')
       const _this = this;
       if ("expand" in data) {
         data.expand = !data.expand;
@@ -443,6 +447,22 @@ export default {
         }
         child.children && _this.collapse(child.children);
       });
+    },
+    toggleExpand(data, val) {
+        var _this = this;
+        if (Array.isArray(data)) {
+            data.forEach(function(item) {
+              _this.$set(item, "expand", val);
+              if (item.children) {
+                _this.toggleExpand(item.children, val);
+              }
+            });
+        } else {
+            this.$set(data, "expand", val);
+            if (data.children) {
+              _this.toggleExpand(data.children, val);
+            }
+        }
     },
     getDetailMockdata() {
       return new Promise(resolve => {
