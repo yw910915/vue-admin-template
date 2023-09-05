@@ -63,33 +63,11 @@ export default {
   mounted() {},
 
   methods: {
-    getTableData() {
-      const tableData = [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄"
-        }
-      ];
+    getTableData(value) {
+      console.log(value, 'getTableData__________________')
+      const {tableSlot:{name,key,type,columns, data}} = value
       return (
-        <el-table data={tableData} style="width: 100%">
-          <el-table-column
-            prop="date"
-            label="日期"
-            width="180"
-          ></el-table-column>
-          <el-table-column
-            prop="name"
-            label="姓名"
-            width="180"
-          ></el-table-column>
-          <el-table-column prop="address" label="地址"></el-table-column>
-        </el-table>
+        <a-table columns={columns} data-source={data}></a-table>
       );
     },
     getPercentage(data) {
@@ -154,14 +132,20 @@ export default {
       const id = `renderid_${data.key}`;
       return (
         <div style="margin:5px;" id={id}>
-          <div class="label" style="display: inline-block;min-width:80px">
+          <div class="label" style="display: inline-block;min-width:80px;width: 100%;text-align: left;">
             {data.title}
           </div>
+          {data.content ? <div style="max-width:400px">{data.content}</div> : ''}
+          {/*表格*/}
+          {data.tableSlot && Object.keys(data.tableSlot).length>0 ? this.getTableData(data): ''}
+          {/*图片*/}
+          {data.imgSlot && Object.keys(data.imgSlot).length>0 ? <img style={{...data.imgSlot.styles}} src={data.imgSlot.imgSrc} />: ''}
+          {/*百分比test*/}
           {this.getPercentage(data)}
-          <i class="el-icon-s-comment"></i>
+          {/*<i class="el-icon-s-comment"></i>*/}
           {/*JSON.stringify(data)*/}
+          {/*上下增加按钮*/}
           {this.getNodeAddDom(data)}
-          {/*data.key == "833333" ? this.getTableData() : ""*/}
         </div>
       );
     },
