@@ -62,11 +62,25 @@ export const mockdata = [
       percentage: '10%',
       percentageType: 'percentage',
     },
-    children: [
-      {
-        key: '2-1',
-        title: "3.蓄电池放电",
-      }
-    ]
+    // children: [
+    //   {
+    //     key: '2-1',
+    //     title: "2.1.蓄电池放电",
+    //     percentageData: {
+    //       percentage: '20%',
+    //       percentageType: 'percentage',
+    //     },
+    //     children: []
+    //   },
+    //   {
+    //     key: '2-2',
+    //     title: "2.2.蓄电池放电",
+    //     percentageData: {
+    //       percentage: '20%',
+    //       percentageType: 'percentage',
+    //     },
+    //     children: []
+    //   }
+    // ]
   }
 ]

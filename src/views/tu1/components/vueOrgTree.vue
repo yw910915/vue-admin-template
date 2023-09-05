@@ -354,55 +354,106 @@ export default {
 
     },
     // 同级 按钮点击
+    // 原来方法
+    // clickSameLevel(e, item, type) {
+    //   e.stopPropagation();
+    //   console.log(e, "clickSameLevel____同级", item, type);
+    //   const { key } = item;
+      
+    //   function addNodeAfterIndex(treeData, targetId) {
+    //     // 递归遍历树形结构数据
+    //     function traverse(node, parentId, currentIndex, parentNode) {
+    //       if (node.key == parentId) {
+    //         // 找到匹配的节点
+    //         if (!parentNode.children) {
+    //           parentNode.children = [];
+    //         }
+    //         // 生成新的key
+    //         let newKey = ''
+    //         if(String(node.key).indexOf('-')> -1) {
+    //           let lenArr = node.key.split('-')
+    //           // const lastKeyNum = Number(lenArr[lenArr.length - 1]) + 1
+    //           // 临时自增加大，后面调整
+    //           const lastKeyNum = Number(lenArr[lenArr.length - 1]) + 100
+
+    //           lenArr[lenArr.length - 1] = lastKeyNum
+    //           newKey = lenArr.join('-')
+    //         } else {
+    //           newKey = Number(node.key)
+    //         }
+    //         let newNode = {
+    //           key: newKey,
+    //           title: " "
+    //         };
+    //         // 在当前索引的后面插入新节点
+    //         parentNode.children.splice(currentIndex + 1, 0, newNode);
+    //       } else if (node.children) {
+    //         // 继续遍历子节点
+    //         for (let i = 0; i < node.children.length; i++) {
+    //           traverse(node.children[i], parentId, i, node);
+    //         }
+    //       }
+    //     }
+
+    //     // 找到树中的根节点
+    //     for (let i = 0; i < treeData.length; i++) {
+    //       traverse(treeData[i], targetId, -1, null);
+    //     }
+
+    //     return treeData;
+    //   }
+    //   const temp = [{ ...this.dataList }];
+    //   const da = addNodeAfterIndex(temp, key)[0];
+    //   this.dataList = da
+
+    // },
+    // 同级 按钮点击
     clickSameLevel(e, item, type) {
       e.stopPropagation();
-      console.log(e, "clickSameLever____同级", item, type);
+      console.log(e, "clickSameLevel____同级", item, type);
       const { key } = item;
       
-      function addNodeAfterIndex(treeData, targetId) {
-        // 递归遍历树形结构数据
-        function traverse(node, parentId, currentIndex, parentNode) {
-          if (node.key == parentId) {
-            // 找到匹配的节点
-            if (!parentNode.children) {
-              parentNode.children = [];
-            }
-            // 生成新的key
-            let newKey = ''
-            if(String(node.key).indexOf('-')> -1) {
-              let lenArr = node.key.split('-')
-              // const lastKeyNum = Number(lenArr[lenArr.length - 1]) + 1
-              // 临时自增加大，后面调整
-              const lastKeyNum = Number(lenArr[lenArr.length - 1]) + 100
+      function addNodeToTree(treeData, targetId, newNode, position) {
+        let found = false;
 
-              lenArr[lenArr.length - 1] = lastKeyNum
-              newKey = lenArr.join('-')
-            } else {
-              newKey = Number(node.key)
+        // 递归遍历树形结构数据
+        function traverse(node, parentArray, index) {
+          if (node.key == targetId) {
+            // 找到匹配的节点
+            found = true;
+            if (position === 'top') {
+              // 在当前id所在数组对象的索引的前面插入新节点
+              parentArray.splice(index, 0, newNode);
+            } else if (position === 'bottom') {
+              // 在当前id所在数组对象的索引的后面插入新节点
+              parentArray.splice(index + 1, 0, newNode);
             }
-            let newNode = {
-              key: newKey,
-              title: " "
-            };
-            // 在当前索引的后面插入新节点
-            parentNode.children.splice(currentIndex + 1, 0, newNode);
           } else if (node.children) {
             // 继续遍历子节点
             for (let i = 0; i < node.children.length; i++) {
-              traverse(node.children[i], parentId, i, node);
+              traverse(node.children[i], node.children, i);
+              if (found) break; // 如果已经找到匹配的节点，停止遍历
             }
           }
         }
 
         // 找到树中的根节点
         for (let i = 0; i < treeData.length; i++) {
-          traverse(treeData[i], targetId, -1, null);
+          traverse(treeData[i], treeData, i);
+          if (found) break; // 如果已经找到匹配的节点，停止遍历
         }
 
         return treeData;
       }
-      const temp = [{ ...this.dataList }];
-      const da = addNodeAfterIndex(temp, key)[0];
+      // const temp = [{ ...this.dataList }];
+      const temp = [_.cloneDeep(this.dataList)];
+      const newNode = {
+        key: this.generateUniqueID, // 生成随机id
+        title: "New Node"
+
+      };
+      const da = addNodeToTree(temp, key, newNode, type)[0];
+      console.log(da, 'addNodeToTree')
       this.dataList = da
 
     },
@@ -437,6 +488,7 @@ export default {
       }
       const temp = [{ ...this.dataList }];
       const da = addTreeChild(temp, key)[0];
+      console.log(da, 'addTreeChild______________')
       this.dataList = da
     },
     onExpand(e, data) {
@@ -475,6 +527,22 @@ export default {
               _this.toggleExpand(data.children, val);
             }
         }
+    },
+    // 生成随机id
+    generateUniqueID() {  
+      // 获取当前时间戳（毫秒）  
+      const timestamp = Date.now();  
+        
+      // 将时间戳转换为字符串，并只保留最后8位  
+      const timestampString = timestamp.toString(16).slice(-8);  
+        
+      // 生成一个随机的6位数字  
+      const randomNumber = Math.floor(Math.random() * 1000000);  
+        
+      // 将时间和随机数组合成最终的唯一ID  
+      const uniqueID = timestampString + randomNumber.toString();  
+        
+      return uniqueID;  
     },
     getDetailMockdata() {
       return new Promise(resolve => {
