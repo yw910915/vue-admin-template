@@ -86,18 +86,20 @@ export default {
       const vnode = [];
       if (data.isShowAddBtn) {
         vnode.push(
-          <i
-            class="el-icon-circle-plus-outline topAddIcon"
+          <a-icon
+            type="plus-outline"
+            class="topAddIcon"
             style="position:absolute"
             onClick={e => this.onClickTopAdd(e, data)}
-          ></i>
+          ></a-icon>
         );
         vnode.push(
-          <i
-            class="el-icon-circle-plus-outline bottomAddIcon"
+          <a-icon
+            type="plus-outline"
+            class="bottomAddIcon"
             style="position:absolute"
             onClick={e => this.onClickBottomAdd(e, data)}
-          ></i>
+          ></a-icon>
         );
         if (data.showTopAddStutas) {
           vnode.push(
