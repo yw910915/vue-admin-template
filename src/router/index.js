@@ -69,6 +69,18 @@ export const constantRoutes = [
         meta: { title: 'g6', icon: 'table' }
       },
       {
+        path: 'tu0',
+        name: 'tu0',
+        component: () => import('@/views/tu0/index'),
+        meta: { title: 'tu0', icon: 'table' }
+      },
+      {
+        path: 'tu00',
+        name: 'tu00',
+        component: () => import('@/views/tu0/index1.vue'),
+        meta: { title: 'tu00', icon: 'table' }
+      },
+      {
         path: 'tu1',
         name: 'tu1',
         component: () => import('@/views/tu1/index'),
