@@ -87,7 +87,7 @@ export default {
       if (data.isShowAddBtn) {
         vnode.push(
           <a-icon
-            type="plus-outline"
+            type="plus-circle"
             class="topAddIcon"
             style="position:absolute"
             onClick={e => this.onClickTopAdd(e, data)}
@@ -95,7 +95,7 @@ export default {
         );
         vnode.push(
           <a-icon
-            type="plus-outline"
+            type="plus-circle"
             class="bottomAddIcon"
             style="position:absolute"
             onClick={e => this.onClickBottomAdd(e, data)}
@@ -134,10 +134,10 @@ export default {
       const id = `renderid_${data.key}`;
       return (
         <div style="margin:5px;" id={id}>
-          <div class="label" style="display: inline-block;min-width:80px;width: 100%;text-align: left;">
+          {data.title?<div class="label" style="display: inline-block;min-width:80px;width: 100%;text-align: left;">
             {data.title}
-          </div>
-          {data.content ? <div style="max-width:400px">{data.content}</div> : ''}
+          </div>: ''}
+          {/*data.content ? <div style="max-width:400px">{data.content}</div> : ''*/}
           {/*表格*/}
           {data.tableSlot && Object.keys(data.tableSlot).length>0 ? this.getTableData(data): ''}
           {/*图片*/}
