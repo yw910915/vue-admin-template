@@ -89,7 +89,7 @@ import {
   handleOnNodeDelete,
   findParentNodeAndIndex,
   addNodeToTree
-} from "./common";
+} from "../utils/common";
 export default {
   data() {
     return {
