@@ -50,12 +50,12 @@
         @on-node-dblclick="onNodeDblclick"
         @on-node-copy="onNodeCopy"
       >
-        <!-- <template v-slot="{node}">
+        <template v-slot="{node}">
             <div class="tree-org-node__text node-label">{{node.label}}</div>
         </template>
         <template v-slot:expand="{node}">
           <div>{{node.children.length}}</div>
-        </template>-->
+        </template>
       </zm-tree-org>
     </div>
   </div>

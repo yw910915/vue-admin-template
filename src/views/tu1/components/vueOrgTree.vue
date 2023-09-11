@@ -32,7 +32,7 @@ export default {
   data() {
     return {
       dataList: {}, // 模板绑定的数据
-      horizontal: false, // 横版 竖版
+      horizontal: true, // 横版 竖版
       collapsable: true, // 子节点是否可折叠的
       expandAll: true, // 是否全部展开
       labelClassName: "bg-gray", // 默认颜色

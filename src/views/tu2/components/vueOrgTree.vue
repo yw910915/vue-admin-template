@@ -21,6 +21,9 @@
         :default-expand-level="5"
         :define-menus="defineMenus"
         :node-delete="handleOnNodeDelete"
+        :selectedKey="'mynodeActive'"
+        :selectedClassName="'node-active-my'"
+        @on-node-click="onNodeClick"
       >
         <template v-slot="{node}">
           <div class="card-main">
@@ -90,7 +93,9 @@ import {
   findParentNodeAndIndex,
   addNodeToTree
 } from "../utils/common";
+// import zmTreeOrg from './zmTreeOrg/src.index'
 export default {
+  // components: { zmTreeOrg },
   data() {
     return {
       toolBar: {
@@ -106,6 +111,7 @@ export default {
             pid: 1,
             title: "产品研发部",
             type: "text",
+            mynodeActive: true,
             children: [
               {
                 id: 3,
@@ -241,7 +247,7 @@ export default {
           }
         ]
       },
-      horizontal: false, // 是否横向
+      horizontal: true, // 是否横向
       collapsable: true, // 是否可展开收起
       onlyOneNode: false, // 是否仅拖动当前节点
       cloneNodeDrag: false, // 是否拷贝节点拖拽
@@ -253,6 +259,9 @@ export default {
     };
   },
   methods: {
+    onNodeClick(e,node) {
+      console.log(e,node, 'onNodeClick')
+    },
     handleOnNodeDelete,
     // 隐藏左键菜单
     defineMenus() {
@@ -333,6 +342,10 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.node-active-my {
+  border:1px solid red;
+  color: green;
+}
 /* 每个节点样式 */
 .card-main {
   min-width: 15vw;
@@ -479,18 +492,18 @@ export default {
 //     position: absolute;
 //   }
 // }
-.tree-org-node__inner:hover {
-  box-shadow: 2px 2px 5px rgba(4, 45, 124, 0.55);
-}
-/* 删除部门弹框 */
-.deleteDailog {
-  min-width: 30vw;
-  .el-message-box__header {
-    border-bottom: 1px solid #e8e8e8;
-  }
-  .el-message-box__message {
-    text-align: center;
-  }
-}
+// .tree-org-node__inner:hover {
+//   box-shadow: 2px 2px 5px rgba(4, 45, 124, 0.55);
+// }
+// /* 删除部门弹框 */
+// .deleteDailog {
+//   min-width: 30vw;
+//   .el-message-box__header {
+//     border-bottom: 1px solid #e8e8e8;
+//   }
+//   .el-message-box__message {
+//     text-align: center;
+//   }
+// }
 </style>
 

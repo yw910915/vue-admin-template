@@ -8,11 +8,11 @@
         v-if="treeArr.length>0"
         ref="menuTree"
         :tree-data="treeArr"
-        node-key="key"
         blockNode
         default-expand-all
         :auto-expand-parent="true"
         :expandAction="false"
+        :replace-fields="{key: 'id'}"
         @select="handleClick"
         @expand="onExpand"
       >
