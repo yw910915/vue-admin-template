@@ -9,64 +9,64 @@ export const mockdata = [
         pid: 1,
         title: "产品研发部",
         type: "text",
-        children: [
-          {
-            id: 3,
-            pid: 2,
-            type: "text",
-            // title: "科技创新中心",
-            tableSlot: {
-              name: "风险分析",
-              id: "table298332838",
-              type: "table",
-              columns: [
-                {
-                  title: "序号",
-                  align: "center",
-                  width: 60,
-                  customRender: (text, record, index) => {
-                    return `${index + 1}`;
-                  }
-                },
-                {
-                  dataIndex: "name",
-                  id: "name",
-                  title: "name"
-                },
-                {
-                  title: "Age",
-                  dataIndex: "age",
-                  id: "age"
-                },
-                {
-                  title: "Address",
-                  dataIndex: "address",
-                  id: "address"
-                }
-              ],
-              data: [
-                {
-                  id: "1",
-                  name: "John Brown",
-                  age: 32,
-                  address: "New York No. 1 Lake Park"
-                },
-                {
-                  id: "2",
-                  name: "Jim Green",
-                  age: 42,
-                  address: "London No. 1 Lake Park"
-                },
-                {
-                  id: "3",
-                  name: "Joe Black",
-                  age: 32,
-                  address: "Sidney No. 1 Lake Park"
-                }
-              ]
-            }
-          }
-        ]
+        // children: [
+        //   {
+        //     id: 3,
+        //     pid: 2,
+        //     type: "text",
+        //     // title: "科技创新中心",
+        //     tableSlot: {
+        //       name: "风险分析",
+        //       id: "table298332838",
+        //       type: "table",
+        //       columns: [
+        //         {
+        //           title: "序号",
+        //           align: "center",
+        //           width: 60,
+        //           customRender: (text, record, index) => {
+        //             return `${index + 1}`;
+        //           }
+        //         },
+        //         {
+        //           dataIndex: "name",
+        //           id: "name",
+        //           title: "name"
+        //         },
+        //         {
+        //           title: "Age",
+        //           dataIndex: "age",
+        //           id: "age"
+        //         },
+        //         {
+        //           title: "Address",
+        //           dataIndex: "address",
+        //           id: "address"
+        //         }
+        //       ],
+        //       data: [
+        //         {
+        //           id: "1",
+        //           name: "John Brown",
+        //           age: 32,
+        //           address: "New York No. 1 Lake Park"
+        //         },
+        //         {
+        //           id: "2",
+        //           name: "Jim Green",
+        //           age: 42,
+        //           address: "London No. 1 Lake Park"
+        //         },
+        //         {
+        //           id: "3",
+        //           name: "Joe Black",
+        //           age: 32,
+        //           address: "Sidney No. 1 Lake Park"
+        //         }
+        //       ]
+        //     }
+        //   }
+        // ]
       },
       {
         id: 4,

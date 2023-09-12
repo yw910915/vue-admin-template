@@ -90,6 +90,7 @@
 .org-tree-node {
   padding-top: 20px;
   display: table-cell;
+  display: table-cell;
   vertical-align: top;
 
   &.is-leaf, &.collapsed {

@@ -39,7 +39,7 @@
             <div v-if="node.imgSlot" class="p-content">
               <img :style="node.imgSlot.styles" :src="node.imgSlot.imgSrc" />
             </div>
-            <div :class="'operation-btn'">
+            <!-- <div :class="'operation-btn'">
               <div @click="onNodeHandleBtn('add_same',node)">
                 <a-popover>
                   <template slot="content">
@@ -72,7 +72,7 @@
                   <a-icon type="delete" />
                 </a-popover>
               </div>
-            </div>
+            </div> -->
           </div>
         </template>
       </zm-tree-org>
@@ -112,91 +112,91 @@ export default {
             title: "产品研发部",
             type: "text",
             mynodeActive: true,
-            children: [
-              {
-                id: 3,
-                pid: 2,
-                type: "text",
-                // title: "科技创新中心",
-                tableSlot: {
-                  name: "风险分析",
-                  key: "table298332838",
-                  type: "table",
-                  columns: [
-                    {
-                      title: "序号",
-                      align: "center",
-                      width: 60,
-                      customRender: (text, record, index) => {
-                        return `${index + 1}`;
-                      }
-                    },
-                    {
-                      dataIndex: "name",
-                      key: "name",
-                      title: "name"
-                    },
-                    {
-                      title: "Age",
-                      dataIndex: "age",
-                      key: "age"
-                    },
-                    {
-                      title: "Address",
-                      dataIndex: "address",
-                      key: "address"
-                    }
-                  ],
-                  data: [
-                    {
-                      key: "1",
-                      name: "John Brown",
-                      age: 32,
-                      address: "New York No. 1 Lake Park"
-                    },
-                    {
-                      key: "2",
-                      name: "Jim Green",
-                      age: 42,
-                      address: "London No. 1 Lake Park"
-                    },
-                    {
-                      key: "3",
-                      name: "Joe Black",
-                      age: 32,
-                      address: "Sidney No. 1 Lake Park"
-                    }
-                  ]
-                }
-              }
-            ]
+            // children: [
+            //   {
+            //     id: 3,
+            //     pid: 2,
+            //     type: "text",
+            //     // title: "科技创新中心",
+            //     tableSlot: {
+            //       name: "风险分析",
+            //       key: "table298332838",
+            //       type: "table",
+            //       columns: [
+            //         {
+            //           title: "序号",
+            //           align: "center",
+            //           width: 60,
+            //           customRender: (text, record, index) => {
+            //             return `${index + 1}`;
+            //           }
+            //         },
+            //         {
+            //           dataIndex: "name",
+            //           key: "name",
+            //           title: "name"
+            //         },
+            //         {
+            //           title: "Age",
+            //           dataIndex: "age",
+            //           key: "age"
+            //         },
+            //         {
+            //           title: "Address",
+            //           dataIndex: "address",
+            //           key: "address"
+            //         }
+            //       ],
+            //       data: [
+            //         {
+            //           key: "1",
+            //           name: "John Brown",
+            //           age: 32,
+            //           address: "New York No. 1 Lake Park"
+            //         },
+            //         {
+            //           key: "2",
+            //           name: "Jim Green",
+            //           age: 42,
+            //           address: "London No. 1 Lake Park"
+            //         },
+            //         {
+            //           key: "3",
+            //           name: "Joe Black",
+            //           age: 32,
+            //           address: "Sidney No. 1 Lake Park"
+            //         }
+            //       ]
+            //     }
+            //   }
+            // ]
           },
           {
             id: 4,
             pid: 1,
             title: "销售部",
-            children: [
-              {
-                id: 5,
-                pid: 4,
-                // title: "销售一部",
-                imgSlot: {
-                  name: "图片测试",
-                  id: "img2392383292",
-                  type: "img",
-                  imgSrc: require("../../../assets/404_images/404.png"),
-                  styles: {
-                    width: "250px",
-                    height: "150px"
-                  }
-                }
-              },
-              {
-                id: 6,
-                pid: 4,
-                title: "销售二部",
-              }
-            ]
+            // children: [
+            //   {
+            //     id: 5,
+            //     pid: 4,
+            //     // title: "销售一部",
+            //     imgSlot: {
+            //       name: "图片测试",
+            //       id: "img2392383292",
+            //       type: "img",
+            //       imgSrc: require("../../../assets/404_images/404.png"),
+            //       styles: {
+            //         width: "250px",
+            //         height: "150px"
+            //       }
+            //     }
+            //   },
+            //   {
+            //     id: 6,
+            //     pid: 4,
+            //     title: "销售二部",
+            //   }
+            // ]
           },
           {
             id: 7,
@@ -244,10 +244,15 @@ export default {
                 ]
               }
             ]
+          },
+          {
+            id: 3333333,
+            pid: 133333,
+            title: "财务部11",
           }
         ]
       },
-      horizontal: true, // 是否横向
+      horizontal: false, // 是否横向
       collapsable: true, // 是否可展开收起
       onlyOneNode: false, // 是否仅拖动当前节点
       cloneNodeDrag: false, // 是否拷贝节点拖拽
@@ -363,7 +368,8 @@ export default {
   // }
   .p-title {
     color: #868686;
-    padding: 15px 0;
+    padding: 5px 0;
+
   }
   .p-content {
     display: flex;

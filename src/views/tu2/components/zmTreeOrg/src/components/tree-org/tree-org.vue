@@ -16,36 +16,38 @@
         :draggable="draggable"
         :drag-cancel="dragCancel"
       >
-        <div ref="tree-org" class="tree-org" :class="{horizontal, collapsable}">
-          <tree-org-node
-            :data="data"
-            :props="keys"
-            :lazy="lazy"
-            :key="nodeKey"
-            :suffix="suffix"
-            :horizontal="horizontal"
-            :label-style="labelStyle"
-            :collapsable="collapsable"
-            :default-expand-level="defaultExpandLevel"
-            :render-content="renderContent"
-            :label-class-name="labelClassName"
-            v-nodedrag.l.t="nodeargs"
-            @on-expand="handleExpand"
-            @on-node-click="handleClick"
-            @on-node-dblclick="handleDblclick"
-            @on-node-mouseenter="nodeMouseenter"
-            @on-node-mouseleave="nodeMouseleave"
-            @on-node-contextmenu="nodeContextmenu"
-            @on-node-focus="(e, data) => { $emit('on-node-focus', e, data)}"
-            @on-node-blur="handleBlur"
-          >
-          <template v-if="$scopedSlots.default" v-slot="{node}">
-            <slot :node="node"></slot>
-          </template>
-          <template v-if="$scopedSlots.expand" v-slot:expand="{node}">
-            <slot name="expand" :node="node"></slot>
-          </template>
-          </tree-org-node>
+        <div :class="horizontal? 'heng': 'zong'">
+            <div ref="tree-org" class="tree-org" :class="{horizontal, collapsable}">
+              <tree-org-node
+                :data="data"
+                :props="keys"
+                :lazy="lazy"
+                :key="nodeKey"
+                :suffix="suffix"
+                :horizontal="horizontal"
+                :label-style="labelStyle"
+                :collapsable="collapsable"
+                :default-expand-level="defaultExpandLevel"
+                :render-content="renderContent"
+                :label-class-name="labelClassName"
+                v-nodedrag.l.t="nodeargs"
+                @on-expand="handleExpand"
+                @on-node-click="handleClick"
+                @on-node-dblclick="handleDblclick"
+                @on-node-mouseenter="nodeMouseenter"
+                @on-node-mouseleave="nodeMouseleave"
+                @on-node-contextmenu="nodeContextmenu"
+                @on-node-focus="(e, data) => { $emit('on-node-focus', e, data)}"
+                @on-node-blur="handleBlur"
+              >
+              <template v-if="$scopedSlots.default" v-slot="{node}">
+                <slot :node="node"></slot>
+              </template>
+              <template v-if="$scopedSlots.expand" v-slot:expand="{node}">
+                <slot name="expand" :node="node"></slot>
+              </template>
+              </tree-org-node>
+            </div>
         </div>
       </zm-draggable>
     </div>
