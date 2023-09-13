@@ -1,7 +1,5 @@
-// @import url("//at.alicdn.com/t/font_2201426_wnqkpnyga1.css");
 @import url("//at.alicdn.com/t/c/font_2201426_5zouj4513g3.css");
 .zong {
-  
   .zm-tree-org {
     height: 100%;
     padding: 15px;
@@ -27,174 +25,58 @@
     }
   }
   .tree-org {
-    // &>.tree-org-node:first-child::before {
-    //   border-left: 0;
-    // }
-    // &>.tree-org-node:first-child:after {
-    //   border-bottom: 0;
-    // }
-
-    display: table;
-    text-align: center;
-    &:before, &:after {
-      content: '';
-      display: table;
-    }
-    &:after {
-      clear: both;
-    }
-    &-node__children {
-      // display: table;
-      // width: 100%;
-
-      position: relative;
-      left: 20px;
-      &:before, &:after {
-        transition: all .35s;
+    &>.tree-org-node>.tree-org-node__content {
+      .tree-org-node__inner {
+        background-color: #fff;
+        box-shadow: none;
+        font-weight: 700;
       }
-      &>.tree-org-node {
-        &:before {
-          display: table-cell;
-          content: '';
-          position: absolute;
-          top: 0;
-          left:0;
-          height: 100%;
-          border-left: 1px solid green;
-        }
-        &:not(.is-leaf){
-          &:last-child:before {
-            width: 20px;
-            height: 50px;
-            top: 0;
-            border-left: 1px solid pink;
-            // background-color: yellow;
-          }
-        }
-        &:after {
-          display: table-cell;
-          content: '';
-          position: absolute;
-          top: 30px;
-          left:0;
-          width: 10px;
-          height: 100%;
-          // border-left: 1px solid green;
-          // border-left: none;
-          border-top: 1px solid red;
-          // border-right: 1px solid green;
-          // border-top: 1px solid red;
-        }
-      }
-     
-      
-      
     }
-  
-    
-    
+    &>.tree-org-node:first-child::before {
+      border-left: 0;
+    }
+    &>.tree-org-node:first-child:after {
+      border-bottom: 0;
+    }
+    // .tree-org-node:not(.is-leaf):before {
+    //   background-color: red;
+    //   // height: calc(100% - 10px);
+    // }
+    // .tree-org-node:not(.is-leaf):after {
+    //   // background-color: red;
+    //   // 待修改
+    //   top: calc(-100% + 40px);
+    // }
     .tree-org-node {
       padding-top: 20px;
-      display: table-cell;
+      padding-left: 10px;
       vertical-align: top;
       position: relative;
-  
-      &.is-leaf, &.collapsed {
+      .tree-org-node__children {
         padding-left: 10px;
-        padding-right: 10px;
-        display: table;
       }
-      // &:before {
-      //   display: table-cell;
-      //   content: '';
-      //   position: absolute;
-      //   top: 0;
-      //   left:0;
-      //   height: 100%;
-      //   border-left: 1px solid green;
-      // }
-      // // &:not(.is-leaf)::before {
-      // //   // height: 100%;
-      // //   background-color: yellow;
-      // // }
-      // &:after {
-      //   display: table-cell;
-      //   content: '';
-      //   position: absolute;
-      //   top: 0;
-      //   left:0;
-      //   width: 10px;
-      //   height: 100%;
-      //   // border-left: 1px solid green;
-      //   // border-left: none;
-      //   border-top: 1px solid red;
-      //   // border-right: 1px solid green;
-      //   // border-top: 1px solid red;
-      // }
-
-
-
-      // &.is-leaf:before {
-      //   display: table-cell;
-      //   content: '';
-      //   position: absolute;
-      //   top: 0;
-      //   left:0;
-      //   // width: 100px;
-      //   height: 100%;
-      //   border-left: 1px solid green;
-      //   // background-color: red;
-      //   // border-bottom: 1px solid red;
-      //   // border-bottom: none;
-      //   // border-right: 1px solid green;
-      //   // border-top: 1px solid red;
-      // }
-      // &.is-leaf:after {
-      //   display: table-cell;
-      //   content: '';
-      //   position: absolute;
-      //   top: -50%;
-      //   left:0;
-      //   width: 10px;
-      //   height: 100%;
-      //   // border-left: 1px solid green;
-      //   // border-left: none;
-      //   border-bottom: 1px solid red;
-      //   // border-right: 1px solid green;
-      //   // border-top: 1px solid red;
-      // }
-  
-      // &:last-child:before {
-      //   height: 50%;
-      // }
-      // &:not(:first-child):not(:last-child):after {
-      //   top: 40px;
-      //   border-top: 1px solid red;
-      //   border-bottom: 0;
-      //   // background-color: red;
-      // }
-  
-  
-      // &:before, &:after {
-      //   content: '';
-      //   position: absolute;
-      //   top: 0;
-      //   left: 0;
-      //   width: 50%;
-      //   height: 19px;
-      // }
-  
-      // &:after {
-      //   left: 50%;
-      //   border-left: 1px solid #ddd;
-      // }
-  
-      // &:not(:first-child):before,
-      // &:not(:last-child):after {
-      //   border-top: 1px solid #ddd;
-      // }
-  
-  
+      &:before {
+        display: table-cell;
+        content: '';
+        position: absolute;
+        top: 0;
+        left:0;
+        height: 100%;
+        border-left: 1px solid #ddd
+      }
+      &:after {
+        display: table-cell;
+        content: '';
+        position: absolute;
+        top: -30%;
+        left:0;
+        width: 10px;
+        height: 100%;
+        border-bottom: 1px solid #ddd;
+      }
+      &:last-child:before {
+        height: 70%;
+      }
       &__textarea {
         width: 100%;
         height: 100%;
@@ -207,215 +89,27 @@
         position: relative;
         display: inline-block;
         user-select: none;
+        min-width: 500px;
+        width: 100%;
         &.is-empty.is-edit {
           width: 50px;
           height: 100px;
         }
         .tree-org-node__inner {
+          width: inherit;
           text-align: left;
           border-radius: 2px;
           box-shadow: 0 1px 5px rgba(0, 0, 0, .15);
+          background-color: #cccccc14;
         }
         .tree-org-node__text {
           padding: 10px 15px;
         }
       }
-      &__expand {
-        position: absolute;
-        top: 100%;
-        left: 25%;
-        width: 20px;
-        height: 20px;
-        z-index: 10;
-        margin-left: -11px;
-        margin-top: 9px;
-        background-color: #fff;
-        border: 1px solid #ccc;
-        border-radius: 50%;
-        box-shadow: 0 0 2px rgba(0, 0, 0, .15);
-        cursor: pointer;
-        color: #666;
-        transition: all .35s ease;
-        &.expanded {
-          margin-left: -10px;
-        }
-        &:hover {
-          background-color: #e7e8e9;
-          transform: scale(1.15);
-        }
-        .tree-org-node__expand-btn {
-          &:before, &:after {
-            content: '';
-            position: absolute;
-          }
-  
-          &:before {
-            top: 50%;
-            left: 4px;
-            right: 4px;
-            height: 0;
-            border-top: 1px solid #ccc;
-          }
-  
-          &:after {
-            top: 4px;
-            left: 50%;
-            bottom: 4px;
-            width: 0;
-            border-left: 1px solid #ccc;
-          }
-        }
-        &.expanded {
-          .tree-org-node__expand-btn:after {
-            border: none;
-          }
-        }
-      }
     }
   }
   
-  .collapsable .tree-org-node.collapsed {
-    padding-bottom: 30px;
-    .tree-org-node__content:after {
-      content: '';
-      position: absolute;
-      top: 100%;
-      left: 0;
-      width: 50%;
-      height: 20px;
-      border-right: 1px solid #ddd;
-    }
-  }
-  // .tree-org > .tree-org-node {
-  //   display: flex!important;
-  //   flex-direction: column;
-  //   align-items: center;
-  //   padding-top: 0;
-  //   &:after {
-  //     border-left: 0;
-  //   }
-  // }
-  // .tree-org-node__children {
-  //   display: table;
-  //   padding-top: 20px;
-  //   width: 100%;
-  //   &:before {
-  //     content: '';
-  //     position: absolute;
-  //     top: 0;
-  //     left: 50%;
-  //     width: 0;
-  //     height: 20px;
-  //     border-left: 1px solid #ddd;
-  //   }
-  //   &:after {
-  //     content: '';
-  //     display: table;
-  //     clear: both;
-  //   }
-  // }
   
-  // .horizontal {
-  //   & > .tree-org-node{
-  //     flex-direction: row;
-  //   }
-  //   .tree-org-node {
-  //     display: table-cell;
-  //     float: none;
-  //     padding-top: 0;
-  //     padding-left: 20px;
-  
-  //     &.is-leaf, &.collapsed {
-  //       padding-top: 10px;
-  //       padding-bottom: 10px;
-  //     }
-  
-  //     &:before, &:after {
-  //       width: 19px;
-  //       height: 50%;
-  //     }
-  
-  //     &:after {
-  //       top: 50%;
-  //       left: 0;
-  //       border-left: 0;
-  //     }
-  
-  //     &:only-child:before {
-  //       top: 1px;
-  //       border-bottom: 1px solid #ddd;
-  //     }
-  
-  //     &:not(:first-child):before,
-  //     &:not(:last-child):after {
-  //       border-top: 0;
-  //       border-left: 1px solid #ddd;
-  //     }
-  
-  //     &:not(:only-child):after {
-  //       border-top: 1px solid #ddd;
-  //     }
-  
-  //     .tree-org-node-inner {
-  //       display: table;
-  //     }
-  
-  //   }
-  
-  //   .tree-org-node__content {
-  //     display: table-cell;
-  //     vertical-align: middle;
-  //   }
-  
-  //   &.collapsable .tree-org-node.collapsed {
-  //     padding-right: 30px;
-  
-  //     .tree-org-node__content:after {
-  //       top: 0;
-  //       left: 100%;
-  //       width: 20px;
-  //       height: 50%;
-  //       border-right: 0;
-  //       border-bottom: 1px solid #ddd;
-  //     }
-  //   }
-  
-  //   .tree-org-node__expand {
-  //     top: 50%;
-  //     left: 100%;
-  //     margin-top: -11px;
-  //     margin-left: 9px;
-  //     &.expanded {
-  //       margin-top: -10px;
-  //     }
-  //   }
-  
-  //   & > .tree-org-node:only-child:before {
-  //     border-bottom: 0;
-  //   }
-  
-  //   .tree-org-node__children {
-  //     display: table-cell;
-  //     padding-top: 0;
-  //     padding-left: 20px;
-  
-  //     &:before {
-  //       top: 50%;
-  //       left: 0;
-  //       width: 20px;
-  //       height: 0;
-  //       border-left: 0;
-  //       border-top: 1px solid #ddd;
-  //     }
-  //     &:after {
-  //       display: none;
-  //     }
-  
-  //     & > .tree-org-node {
-  //       display: block;
-  //     }
-  //   }
-  // }
 }
 .zm-tree-handle {
   position: absolute;

@@ -93,6 +93,12 @@ export const constantRoutes = [
         meta: { title: 'tu2', icon: 'table' }
       },
       {
+        path: 'tu4',
+        name: 'tu4',
+        component: () => import('@/views/tu4/index'),
+        meta: { title: 'tu4', icon: 'table' }
+      },
+      {
         path: 'table',
         name: 'Table',
         component: () => import('@/views/table/index'),
