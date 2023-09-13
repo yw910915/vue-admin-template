@@ -210,6 +210,12 @@ export default {
                 content: "李四1"
               },
               {
+                id: 33333333333333333334354345,
+                pid: 7,
+                title: "销售三部",
+                content: "李四1"
+              },
+              {
                 id: 9,
                 pid: 7,
                 title: "销售二部",
@@ -249,6 +255,25 @@ export default {
             id: 3333333,
             pid: 133333,
             title: "财务部11",
+            children: [
+              {
+                id: 123333,
+                pid: 3333333,
+                title: "销售一部1111",
+                content: "李四1"
+              },
+              {
+                id: 13444,
+                pid: 3333333,
+                title: "销售二部2222222",
+                content: "李四2"
+              }
+            ]
+          },
+          {
+            id: 555555555555555,
+            pid: 133333,
+            title: "财务部113333",
           }
         ]
       },
