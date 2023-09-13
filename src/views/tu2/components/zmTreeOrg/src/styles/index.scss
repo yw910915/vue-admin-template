@@ -66,9 +66,8 @@
           &:last-child:before {
             width: 20px;
             height: 50px;
-            top: 0;
+            top: -20px;
             border-left: 1px solid pink;
-            // background-color: yellow;
           }
         }
         &:after {
