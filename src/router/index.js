@@ -99,6 +99,12 @@ export const constantRoutes = [
         meta: { title: 'tu4', icon: 'table' }
       },
       {
+        path: 'tinyMce',
+        name: 'tinyMce',
+        component: () => import('@/views/tinyMce/index'),
+        meta: { title: 'tinyMce', icon: 'table' }
+      },
+      {
         path: 'table',
         name: 'Table',
         component: () => import('@/views/table/index'),
